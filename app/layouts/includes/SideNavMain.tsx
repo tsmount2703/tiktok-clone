@@ -1,11 +1,24 @@
+/* eslint-disable prefer-const */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import MenuItem from "./MenuItem";
 import ClientOnly from "@/app/components/ClientOnly";
 import MenuItemFollow from "./MenuItemFollow";
+import { useGeneralStore } from "@/app/stores/general";
+import { useUser } from "@/app/context/user";
+import { useEffect } from "react";
 
 export default function SideNavMain() {
+  let { randomUsers, setRandomUsers } = useGeneralStore();
+
+  const contextUser = useUser();
   const pathName = usePathname();
+
+  useEffect(() => {
+    setRandomUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div
@@ -38,13 +51,9 @@ export default function SideNavMain() {
 
           <ClientOnly>
             <div className="cursor-pointer">
-              <MenuItemFollow
-                user={{
-                  id: "1",
-                  name: "Test user",
-                  image: "https://placehold.co/50",
-                }}
-              />
+              {randomUsers.map((user, index) => {
+                return <MenuItemFollow key={index} user={user} />;
+              })}
             </div>
           </ClientOnly>
 
@@ -52,7 +61,7 @@ export default function SideNavMain() {
             See all
           </button>
 
-          {true ? (
+          {contextUser?.user?.id ? (
             <div>
               <div className="border-b lg:ml-2 mt-2" />
               <h3 className="lg:block hidden text-xs text-gray-600 font-semibold pt-4 pb-2 px-2">
@@ -63,13 +72,9 @@ export default function SideNavMain() {
 
               <ClientOnly>
                 <div className="cursor-pointer">
-                  <MenuItemFollow
-                    user={{
-                      id: "1",
-                      name: "Test user",
-                      image: "https://placehold.co/50",
-                    }}
-                  />
+                  {randomUsers.map((user, index) => {
+                    return <MenuItemFollow key={index} user={user} />;
+                  })}
                 </div>
               </ClientOnly>
 

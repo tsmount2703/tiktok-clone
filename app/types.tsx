@@ -1,3 +1,5 @@
+import { Usable } from "react";
+
 export interface RandomUsers {
   id: string;
   name: string;
@@ -102,7 +104,7 @@ export interface PostMainLikesCompTypes {
 }
 
 export interface ProfilePageTypes {
-  params: { id: string };
+  params: Usable<{ id: string }>;
 }
 
 export interface PostUserCompTypes {
@@ -118,7 +120,7 @@ export interface TextInputCompTypes {
 }
 
 export interface PostPageTypes {
-  params: { userId: string; postId: string };
+  params: Usable<{ userId: string; postId: string }>;
 }
 
 export interface CommentsHeaderCompTypes {

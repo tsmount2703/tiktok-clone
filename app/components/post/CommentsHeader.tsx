@@ -21,6 +21,7 @@ import useCreateLike from "@/app/hooks/useCreateLike";
 import useDeleteLike from "@/app/hooks/useDeleteLike";
 import useDeletePostById from "@/app/hooks/useDeletePostById";
 import useCreateBucketURL from "@/app/hooks/useCreateBucketURL";
+import moment from "moment";
 
 export default function CommentsHeader({
   post,
@@ -102,7 +103,8 @@ export default function CommentsHeader({
 
   const deletePost = async () => {
     let res = confirm("Are you sure you want to delete this post?");
-    if (res) return;
+    if (!res) return;
+    
     setIsDeleting(true);
 
     try {
@@ -146,7 +148,9 @@ export default function CommentsHeader({
               <span className="relative -top-[2px] text-[30px] pl-1 pr-0.5">
                 .
               </span>
-              <span className="font-medium">{post?.created_at}</span>
+              <span className="font-medium">
+                {moment(post?.created_at).calendar()}
+              </span>
             </div>
           </div>
         </div>
@@ -187,7 +191,7 @@ export default function CommentsHeader({
             </button>
 
             <span className="text-xs pl-2 pr-4 text-gray-800 font-semibold">
-              123
+             {likesByPost.length}
             </span>
           </div>
         </ClientOnly>

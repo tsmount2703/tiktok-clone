@@ -31,8 +31,8 @@ export default function TopNav() {
       if (event.target.value === "") return setSearchProfiles([]);
       try {
         const result = await useSearchProfilesByName(event.target.value);
-        if (result) return setSearchProfiles(result)
-        setSearchProfiles([])
+        if (result) return setSearchProfiles(result);
+        setSearchProfiles([]);
       } catch (error) {
         console.log(error);
         setSearchProfiles([]);
@@ -41,8 +41,6 @@ export default function TopNav() {
     },
     500
   );
-
-  console.log(searchProfiles);
   useEffect(() => {
     setIsEditProfileOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,14 +140,20 @@ export default function TopNav() {
                   >
                     <img
                       className="rounded-full w-[35px] h-[35px]"
-                      src="https://placehold.co/35"
+                      src={useCreateBucketURL(contextUser?.user?.image || "")}
                       alt=""
                     />
                   </button>
 
                   {showMenu ? (
                     <div className="absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[40px] right-0">
-                      <button className="flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer">
+                      <button
+                        onClick={() => {
+                          router.push(`/profile/${contextUser?.user?.id}`);
+                          setShowMenu(false);
+                        }}
+                        className="flex items-center w-full justify-start py-3 px-2 hover:bg-gray-100 cursor-pointer"
+                      >
                         <BiUser size="20" />
                         <span className="pl-2 font-semibold text-sm">
                           Profile

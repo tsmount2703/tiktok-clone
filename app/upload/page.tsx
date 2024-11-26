@@ -1,16 +1,21 @@
+/* eslint-disable prefer-const */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UploadError } from "../types";
 import UploadLayout from "../layouts/UploadLayout";
 import { BiLoaderCircle, BiSolidCloudUpload } from "react-icons/bi";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { PiKnifeLight } from "react-icons/pi";
+import { useUser } from "../context/user";
+import useCreatePost from "../hooks/useCreatePost";
 
 export default function Upload() {
+  const contextUser = useUser();
   const router = useRouter();
 
   let [fileDisplay, setFileDisplay] = useState<string>("");
@@ -18,6 +23,11 @@ export default function Upload() {
   let [file, setFile] = useState<File | null>(null);
   let [error, setError] = useState<UploadError | null>(null);
   let [isUploading, setIsUploading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!contextUser?.user) router.push("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contextUser]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -29,10 +39,6 @@ export default function Upload() {
     }
   };
 
-  const createNewPost = () => {
-    console.log("Create New Post");
-  };
-
   const discard = () => {
     setFileDisplay("");
     setFile(null);
@@ -42,6 +48,36 @@ export default function Upload() {
   const clearVideo = () => {
     setFileDisplay("");
     setFile(null);
+  };
+
+  const validate = () => {
+    setError(null);
+    let isError = false;
+    if (!file) {
+      setError({ type: "File", message: "Please select a file." });
+      isError = true;
+    } else if (!caption) {
+      setError({ type: "caption", message: "A caption is required" });
+      isError = true;
+    }
+    return isError;
+  };
+
+  const createNewPost = async () => {
+    let isError = validate();
+    if (isError) return;
+    if (!file || !contextUser?.user) return;
+    setIsUploading(true);
+
+    try {
+      await useCreatePost(file, contextUser?.user?.id, caption);
+      router.push(`/profile/${contextUser?.user?.id}`);
+      setIsUploading(false);
+    } catch (error) {
+      console.log(error);
+      setIsUploading(false);
+      alert(error);
+    }
   };
 
   return (

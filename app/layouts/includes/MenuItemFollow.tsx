@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { MenuItemFollowCompTypes } from "../../types";
 import { AiOutlineCheck } from "react-icons/ai";
+import useCreateBucketURL from "@/app/hooks/useCreateBucketURL";
 
 export default function MenuItemFollow({ user }: MenuItemFollowCompTypes) {
   return (
@@ -13,7 +14,7 @@ export default function MenuItemFollow({ user }: MenuItemFollowCompTypes) {
         <img
           className="rounded-full lg:mx-0 mx-auto"
           width="35"
-          src={user?.image}
+          src={useCreateBucketURL(user?.image)}
           alt=""
         />
         <div className="lg:pl-2.5 lg:block hidden ">

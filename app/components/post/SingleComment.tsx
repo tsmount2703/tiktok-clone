@@ -10,6 +10,7 @@ import { useState } from "react";
 import { BiLoaderCircle } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import useCreateBucketURL from "../../hooks/useCreateBucketURL";
+import moment from "moment";
 
 export default function SingleComment({
   comment,
@@ -56,7 +57,7 @@ export default function SingleComment({
               <span className="flex items-center">
                 {comment?.profile.name} -
                 <span className="text-[12px] text-gray-600 font-light ml-1">
-                  {comment?.created_at}
+                  {moment(comment?.created_at).calendar()}
                 </span>
               </span>
 

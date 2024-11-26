@@ -138,7 +138,7 @@ export default function Register() {
                 size={25}
               />
             ) : (
-              "Log in"
+              "Register"
             )}
           </button>
         </div>
