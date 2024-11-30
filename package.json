@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.64",
     "@types/debounce": "^1.2.4",
     "appwrite": "^14.0.1",
     "are-we-there-yet": "^4.0.2",
-    "canvas": "^2.11.2",
     "debounce": "^2.2.0",
     "gauge": "^5.0.2",
     "glob": "^11.0.0",
